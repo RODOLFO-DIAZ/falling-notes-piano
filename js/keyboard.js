@@ -40,12 +40,21 @@ function createKey(code, pitch) {
 
 // Fills the container with the 17 keys and returns pitch -> key element,
 // so input handlers can light keys without searching the DOM.
+// CSS places each black key from --white-index (white keys to its left)
+// and sizes white keys from --white-count, so no position is hardcoded.
 export function renderKeyboard(container) {
     const keysByPitch = new Map();
+    let whiteCount = 0;
     for (const [code, pitch] of Object.entries(KEY_TO_PITCH)) {
         const key = createKey(code, pitch);
+        if (isSharp(pitch)) {
+            key.style.setProperty("--white-index", whiteCount);
+        } else {
+            whiteCount += 1;
+        }
         keysByPitch.set(pitch, key);
         container.append(key);
     }
+    container.style.setProperty("--white-count", whiteCount);
     return keysByPitch;
 }
