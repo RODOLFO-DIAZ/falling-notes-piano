@@ -1,0 +1,97 @@
+/* ==========================================================================
+   Design tokens
+   ========================================================================== */
+:root {
+    --color-bg: #14161c;
+    --color-surface: #1e212a;
+    --color-border: #2e3240;
+    --color-text: #eceef4;
+    --color-muted: #a3a9ba;
+    --color-accent: #7c8cff;
+
+    --font-body: system-ui, "Segoe UI", Roboto, Arial, sans-serif;
+
+    --space-xs: 0.25rem;
+    --space-sm: 0.5rem;
+    --space-md: 1rem;
+    --space-lg: 2rem;
+
+    --radius-md: 8px;
+}
+
+/* ==========================================================================
+   Base
+   ========================================================================== */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    font-family: var(--font-body);
+    line-height: 1.5;
+}
+
+h1,
+h2,
+p {
+    margin: 0;
+}
+
+/* ==========================================================================
+   Layout
+   ========================================================================== */
+.site-header,
+.site-footer {
+    padding: var(--space-md) var(--space-lg);
+}
+
+.site-header {
+    border-bottom: 1px solid var(--color-border);
+}
+
+.site-title {
+    font-size: 1.25rem;
+    letter-spacing: 0.02em;
+}
+
+.app {
+    flex: 1;
+    display: grid;
+    place-items: center;
+    padding: var(--space-lg);
+}
+
+.site-footer {
+    border-top: 1px solid var(--color-border);
+    color: var(--color-muted);
+    font-size: 0.875rem;
+}
+
+/* ==========================================================================
+   Screens
+   ========================================================================== */
+.screen {
+    width: min(100%, 32rem);
+    padding: var(--space-lg);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    background-color: var(--color-surface);
+    text-align: center;
+}
+
+.screen-title {
+    margin-bottom: var(--space-sm);
+    font-size: 1.5rem;
+}
+
+.screen-text {
+    color: var(--color-muted);
+}
