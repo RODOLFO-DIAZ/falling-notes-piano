@@ -17,6 +17,22 @@
     --space-lg: 2rem;
 
     --radius-md: 8px;
+    --radius-key: 0 0 6px 6px;
+
+    --color-key-white: #f4f4f0;
+    --color-key-white-label: #3a3f4f;
+    --color-key-black: #14161c;
+    --color-key-black-label: #c9cdd8;
+    --color-key-edge: #0b0c10;
+    --color-key-active: var(--color-accent);
+    --color-key-active-label: #14161c;
+    --color-key-black-active: #4f5fd6;
+    --color-key-black-active-label: #ffffff;
+
+    --piano-max-width: 48rem;
+    --piano-height: 12rem;
+    --black-key-width-ratio: 0.6;
+    --black-key-height: 62%;
 }
 
 /* ==========================================================================
@@ -66,6 +82,8 @@ p {
     flex: 1;
     display: grid;
     place-items: center;
+    align-content: center;
+    gap: var(--space-lg);
     padding: var(--space-lg);
 }
 
@@ -94,4 +112,70 @@ p {
 
 .screen-text {
     color: var(--color-muted);
+}
+
+/* ==========================================================================
+   Piano
+   ========================================================================== */
+/* White keys sit side by side; black keys are lifted out of the row and
+   placed on the line between two white keys. --white-count and
+   --white-index are set from the key map when the piano is rendered. */
+.piano {
+    --white-key-width: calc(100% / var(--white-count));
+    --black-key-width: calc(var(--white-key-width) * var(--black-key-width-ratio));
+
+    position: relative;
+    display: flex;
+    width: min(100%, var(--piano-max-width));
+    height: var(--piano-height);
+    user-select: none;
+}
+
+.key {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 0 0 var(--space-sm);
+    border: 1px solid var(--color-key-edge);
+    border-radius: var(--radius-key);
+    font: inherit;
+    font-weight: 600;
+    cursor: pointer;
+    touch-action: none;
+}
+
+.key-white {
+    flex: 1;
+    background-color: var(--color-key-white);
+    color: var(--color-key-white-label);
+}
+
+.key-black {
+    position: absolute;
+    top: 0;
+    left: calc(var(--white-index) * var(--white-key-width) - var(--black-key-width) / 2);
+    z-index: 1;
+    width: var(--black-key-width);
+    height: var(--black-key-height);
+    background-color: var(--color-key-black);
+    color: var(--color-key-black-label);
+    font-size: 0.875rem;
+}
+
+/* Lit while the key is held, from the keyboard or the pointer. */
+.key-white.is-active {
+    background-color: var(--color-key-active);
+    color: var(--color-key-active-label);
+}
+
+.key-black.is-active {
+    background-color: var(--color-key-black-active);
+    color: var(--color-key-black-active-label);
+}
+
+.key-label-alt {
+    font-size: 0.75rem;
+    font-weight: 400;
+    opacity: 0.75;
 }
