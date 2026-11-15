@@ -1,0 +1,15 @@
+# Operating system
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editors
+.vscode/
+.idea/
+
+# Node (local tooling only)
+node_modules/
+npm-debug.log*
+
+# Logs
+*.log
