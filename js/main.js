@@ -3,15 +3,18 @@
 
 import { renderKeyboard } from "./keyboard.js";
 import { initPiano } from "./piano.js";
-import { bindKeyboardInput } from "./input.js";
+import { bindKeyboardInput, bindPointerInput, bindFocusLoss } from "./input.js";
 
 const READY_MESSAGE = "Proyecto en construcción: pronto podrás tocar aquí.";
 
 function init() {
     const message = document.getElementById("status-message");
     message.textContent = READY_MESSAGE;
-    initPiano(renderKeyboard(document.getElementById("piano")));
+    const pianoElement = document.getElementById("piano");
+    initPiano(renderKeyboard(pianoElement));
     bindKeyboardInput();
+    bindPointerInput(pianoElement);
+    bindFocusLoss();
 }
 
 init();
