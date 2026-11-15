@@ -17,18 +17,11 @@ const VOICE_PEAK_GAIN = 0.2;
 // Triangle is softer than square or sawtooth and fuller than sine.
 const WAVEFORM = "triangle";
 
+// Stays null until unlock(), so nothing sounds before the user starts.
 let context = null;
 
-// Created on first use, not at import time: browsers keep an audio context
-// made before any user gesture suspended.
-function getContext() {
-    context ??= new AudioContext();
-    return context;
-}
-
 // One oscillator per note: Web Audio oscillators can only start once.
-function playVoice(frequency) {
-    const audioContext = getContext();
+function playVoice(audioContext, frequency) {
     const start = audioContext.currentTime;
     const end = start + ATTACK_TIME + FADE_OUT_TIME;
 
@@ -49,7 +42,18 @@ function playVoice(frequency) {
 }
 
 export const audio = Object.freeze({
+    // Must run inside a user gesture (a click or a key press): browsers
+    // keep an audio context suspended until the user interacts with the page.
+    unlock() {
+        context ??= new AudioContext();
+        return context.resume();
+    },
+
+    // Silent until unlock() has run.
     play(pitch) {
-        playVoice(frequencyOf(pitch));
+        if (!context) {
+            return;
+        }
+        playVoice(context, frequencyOf(pitch));
     },
 });
