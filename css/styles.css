@@ -24,6 +24,10 @@
     --color-key-black: #14161c;
     --color-key-black-label: #c9cdd8;
     --color-key-edge: #0b0c10;
+    --color-key-active: var(--color-accent);
+    --color-key-active-label: #14161c;
+    --color-key-black-active: #4f5fd6;
+    --color-key-black-active-label: #ffffff;
 
     --piano-max-width: 48rem;
     --piano-height: 12rem;
@@ -157,6 +161,17 @@ p {
     background-color: var(--color-key-black);
     color: var(--color-key-black-label);
     font-size: 0.875rem;
+}
+
+/* Lit while the key is held, from the keyboard or the pointer. */
+.key-white.is-active {
+    background-color: var(--color-key-active);
+    color: var(--color-key-active-label);
+}
+
+.key-black.is-active {
+    background-color: var(--color-key-black-active);
+    color: var(--color-key-black-active-label);
 }
 
 .key-label-alt {
