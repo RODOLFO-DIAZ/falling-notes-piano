@@ -30,11 +30,22 @@ export const PITCH_NAMES = Object.freeze([
 const SEMITONES_PER_OCTAVE = 12;
 const SHARP_SIGN = "#";
 
+// Concert pitch: A4 sounds at 440 Hz and is MIDI note 69.
+const REFERENCE_FREQUENCY = 440;
+const REFERENCE_MIDI = 69;
+
 // "C#4" -> 61. MIDI numbering starts at octave -1, so C4 is 60 and A4 is 69.
 export function midiOf(pitch) {
     const octave = Number(pitch.slice(-1));
     const name = pitch.slice(0, -1);
     return (octave + 1) * SEMITONES_PER_OCTAVE + PITCH_NAMES.indexOf(name);
+}
+
+// "A4" -> 440. Equal temperament: each semitone multiplies the frequency
+// by the twelfth root of 2, so one octave (12 semitones) doubles it.
+export function frequencyOf(pitch) {
+    const semitonesFromA4 = midiOf(pitch) - REFERENCE_MIDI;
+    return REFERENCE_FREQUENCY * 2 ** (semitonesFromA4 / SEMITONES_PER_OCTAVE);
 }
 
 // Sharps are the black keys of the piano.

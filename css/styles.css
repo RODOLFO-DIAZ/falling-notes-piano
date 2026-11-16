@@ -8,6 +8,8 @@
     --color-text: #eceef4;
     --color-muted: #a3a9ba;
     --color-accent: #7c8cff;
+    --color-accent-hover: #98a4ff;
+    --color-button-text: #14161c;
 
     --font-body: system-ui, "Segoe UI", Roboto, Arial, sans-serif;
 
@@ -112,6 +114,31 @@ p {
 
 .screen-text {
     color: var(--color-muted);
+}
+
+/* ==========================================================================
+   Buttons
+   ========================================================================== */
+.button {
+    margin-top: var(--space-lg);
+    padding: var(--space-sm) var(--space-lg);
+    border: 0;
+    border-radius: var(--radius-md);
+    background-color: var(--color-accent);
+    color: var(--color-button-text);
+    font: inherit;
+    font-size: 1.125rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.button:hover {
+    background-color: var(--color-accent-hover);
+}
+
+.button:focus-visible {
+    outline: 3px solid var(--color-text);
+    outline-offset: 3px;
 }
 
 /* ==========================================================================

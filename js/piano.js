@@ -1,6 +1,8 @@
 // Piano key state. pressKey() is the single entry point for every input
 // source (computer keyboard, mouse, touch), so they all behave the same.
 
+import { audio } from "./audio.js";
+
 const ACTIVE_CLASS = "is-active";
 
 let keysByPitch = new Map();
@@ -16,6 +18,7 @@ export function pressKey(pitch) {
     }
     pressedPitches.add(pitch);
     keysByPitch.get(pitch)?.classList.add(ACTIVE_CLASS);
+    audio.play(pitch);
 }
 
 export function releaseKey(pitch) {
