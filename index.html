@@ -27,6 +27,21 @@
             <button id="start-button" class="button" type="button" autofocus>Empezar</button>
         </section>
 
+        <section id="menu-screen" class="screen" aria-labelledby="menu-title" hidden>
+            <h2 id="menu-title" class="screen-title" tabindex="-1">Elige una canción</h2>
+            <ul id="song-list" class="song-list"></ul>
+        </section>
+
+        <section id="game-screen" class="screen" aria-labelledby="game-title" hidden>
+            <h2 id="game-title" class="screen-title" tabindex="-1">Partida</h2>
+            <button class="button" type="button" data-next-state="menu">Volver al menú</button>
+        </section>
+
+        <section id="results-screen" class="screen" aria-labelledby="results-title" hidden>
+            <h2 id="results-title" class="screen-title" tabindex="-1">Canción terminada</h2>
+            <button class="button" type="button" data-next-state="menu">Volver al menú</button>
+        </section>
+
         <section id="piano" class="piano" aria-label="Teclado de piano"></section>
     </main>
 

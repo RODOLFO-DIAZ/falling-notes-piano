@@ -181,6 +181,11 @@ p {
     user-select: none;
 }
 
+/* display: flex above would otherwise keep a hidden piano on screen. */
+.piano[hidden] {
+    display: none;
+}
+
 .key {
     display: flex;
     flex-direction: column;

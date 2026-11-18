@@ -7,14 +7,15 @@ import { bindKeyboardInput, bindPointerInput, bindFocusLoss } from "./input.js";
 import { audio } from "./audio.js";
 import { SONGS } from "./songs.js";
 import { validateSongs } from "./validation.js";
+import { STATES } from "./state.js";
+import { initScreens, setState } from "./screens.js";
 
 // The click on Start is the user gesture the browser needs to allow sound.
 function bindStartScreen() {
-    const startScreen = document.getElementById("start-screen");
     const startButton = document.getElementById("start-button");
     startButton.addEventListener("click", () => {
         audio.unlock();
-        startScreen.hidden = true;
+        setState(STATES.MENU);
     }, { once: true });
 }
 
@@ -40,6 +41,7 @@ function init() {
     bindKeyboardInput();
     bindPointerInput(pianoElement);
     bindFocusLoss();
+    initScreens(document.getElementById("app"), pianoElement);
     bindStartScreen();
 
     const songErrors = validateSongs(SONGS);
