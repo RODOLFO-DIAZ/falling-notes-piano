@@ -134,6 +134,53 @@ p {
 }
 
 /* ==========================================================================
+   Song menu
+   ========================================================================== */
+.song-list {
+    display: grid;
+    gap: var(--space-sm);
+    margin: var(--space-md) 0 0;
+    padding: 0;
+    list-style: none;
+}
+
+.song-button {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding: var(--space-sm) var(--space-md);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+}
+
+.song-button:hover {
+    border-color: var(--color-accent);
+}
+
+.song-button:active {
+    background-color: var(--color-surface);
+}
+
+.song-button:focus-visible {
+    outline: 3px solid var(--color-text);
+    outline-offset: 3px;
+}
+
+.song-title {
+    font-weight: 600;
+}
+
+.song-composer {
+    color: var(--color-muted);
+    font-size: 0.875rem;
+}
+
+/* ==========================================================================
    Buttons
    ========================================================================== */
 .button {

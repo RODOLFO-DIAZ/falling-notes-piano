@@ -9,6 +9,8 @@ import { SONGS } from "./songs.js";
 import { validateSongs } from "./validation.js";
 import { STATES } from "./state.js";
 import { initScreens, setState } from "./screens.js";
+import { renderSongMenu } from "./menu.js";
+import { initGame, startSong } from "./game.js";
 
 // The click on Start is the user gesture the browser needs to allow sound.
 function bindStartScreen() {
@@ -42,6 +44,8 @@ function init() {
     bindPointerInput(pianoElement);
     bindFocusLoss();
     initScreens(document.getElementById("app"), pianoElement);
+    initGame(document.getElementById("game-title"));
+    renderSongMenu(document.getElementById("song-list"), SONGS, startSong);
     bindStartScreen();
 
     const songErrors = validateSongs(SONGS);
