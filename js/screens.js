@@ -3,8 +3,10 @@
 // on screen can never disagree.
 
 import { STATES, canTransition } from "./state.js";
+import { setPianoEnabled } from "./piano.js";
 
 const SCREEN_SELECTOR = ".screen";
+const BACK_TO_MENU_KEY = "Escape";
 const SCREEN_TITLE_SELECTOR = ".screen-title";
 const NEXT_STATE_SELECTOR = "[data-next-state]";
 
@@ -18,7 +20,7 @@ const SCREEN_BY_STATE = Object.freeze({
     [STATES.FREEPLAY]: "game-screen",
 });
 
-// The piano is only on screen while the player can play it.
+// The piano is only on screen, and only plays, while the player can play it.
 const PIANO_STATES = new Set([STATES.PLAYING, STATES.WAITING, STATES.FREEPLAY]);
 
 let currentState = STATES.START;
@@ -30,7 +32,9 @@ function showState(state) {
     for (const [id, screen] of screensById) {
         screen.hidden = id !== visibleId;
     }
-    pianoElement.hidden = !PIANO_STATES.has(state);
+    const isPianoState = PIANO_STATES.has(state);
+    pianoElement.hidden = !isPianoState;
+    setPianoEnabled(isPianoState);
 }
 
 // Without this, keyboard and screen reader users stay on a button that
@@ -48,11 +52,19 @@ function handleNextStateClick(event) {
     }
 }
 
+// Escape works from every screen that has a way back to the menu.
+function handleBackToMenuKey(event) {
+    if (event.code === BACK_TO_MENU_KEY && canTransition(currentState, STATES.MENU)) {
+        setState(STATES.MENU);
+    }
+}
+
 export function initScreens(appElement, piano) {
     const screens = appElement.querySelectorAll(SCREEN_SELECTOR);
     screensById = new Map([...screens].map((screen) => [screen.id, screen]));
     pianoElement = piano;
     appElement.addEventListener("click", handleNextStateClick);
+    document.addEventListener("keydown", handleBackToMenuKey);
     showState(currentState);
 }
 

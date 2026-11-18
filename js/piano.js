@@ -7,13 +7,24 @@ const ACTIVE_CLASS = "is-active";
 
 let keysByPitch = new Map();
 const pressedPitches = new Set();
+let isEnabled = false;
 
 export function initPiano(keyElements) {
     keysByPitch = keyElements;
 }
 
+// Off outside play, so the computer keyboard does not sound from a menu.
+// Turning it off also lets go of held keys, which would otherwise stay
+// lit when the player comes back.
+export function setPianoEnabled(enabled) {
+    isEnabled = enabled;
+    if (!enabled) {
+        releaseAllKeys();
+    }
+}
+
 export function pressKey(pitch) {
-    if (pressedPitches.has(pitch)) {
+    if (!isEnabled || pressedPitches.has(pitch)) {
         return;
     }
     pressedPitches.add(pitch);
