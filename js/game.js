@@ -8,9 +8,11 @@ const FREE_PLAY_TITLE = "Juego libre";
 
 let activeSong = null;
 let titleElement = null;
+let highwayElement = null;
 
-export function initGame(gameTitleElement) {
+export function initGame(gameTitleElement, highway) {
     titleElement = gameTitleElement;
+    highwayElement = highway;
 }
 
 // Note starts are worked out here, once per game, so the game loop only
@@ -18,13 +20,16 @@ export function initGame(gameTitleElement) {
 export function startSong(song) {
     activeSong = prepareSong(song);
     titleElement.textContent = activeSong.title;
+    highwayElement.hidden = false;
     setState(STATES.PLAYING);
 }
 
-// Free play has no song: the keys just sound, with no notes to follow.
+// Free play has no song: the keys just sound, with no notes to follow,
+// so the empty lanes are hidden too.
 export function startFreePlay() {
     activeSong = null;
     titleElement.textContent = FREE_PLAY_TITLE;
+    highwayElement.hidden = true;
     setState(STATES.FREEPLAY);
 }
 

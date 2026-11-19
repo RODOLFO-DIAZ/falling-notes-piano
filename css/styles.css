@@ -32,8 +32,15 @@
     --color-key-black-active: #4f5fd6;
     --color-key-black-active-label: #ffffff;
 
+    --color-lane-white: #1a1d25;
+    --color-lane-black: rgba(11, 12, 16, 0.55);
+    --color-lane-edge: #262a36;
+    --color-hit-line: var(--color-accent);
+
     --piano-max-width: 48rem;
     --piano-height: 12rem;
+    --highway-height: 20rem;
+    --hit-line-height: 3px;
     --black-key-width-ratio: 0.6;
     --black-key-height: 62%;
 }
@@ -212,25 +219,87 @@ p {
 }
 
 /* ==========================================================================
-   Piano
+   Stage: note lanes stacked right on top of the piano
    ========================================================================== */
-/* White keys sit side by side; black keys are lifted out of the row and
-   placed on the line between two white keys. --white-count and
-   --white-index are set from the key map when the piano is rendered. */
-.piano {
+.stage {
+    display: flex;
+    flex-direction: column;
+    width: min(100%, var(--piano-max-width));
+}
+
+/* display: flex above would otherwise keep a hidden stage on screen. */
+.stage[hidden],
+.highway[hidden] {
+    display: none;
+}
+
+/* White keys and white lanes sit side by side; black ones are lifted out
+   of the row and placed on the line between two white ones. --white-count
+   and --white-index are set from KEY_LAYOUT when each row is rendered, so
+   a lane always lines up with its key. */
+.piano,
+.highway {
     --white-key-width: calc(100% / var(--white-count));
     --black-key-width: calc(var(--white-key-width) * var(--black-key-width-ratio));
 
     position: relative;
     display: flex;
-    width: min(100%, var(--piano-max-width));
-    height: var(--piano-height);
+    width: 100%;
     user-select: none;
 }
 
-/* display: flex above would otherwise keep a hidden piano on screen. */
-.piano[hidden] {
-    display: none;
+/* ==========================================================================
+   Note highway
+   ========================================================================== */
+/* overflow: hidden clips the notes above the top edge before they fall in. */
+.highway {
+    height: var(--highway-height);
+    overflow: hidden;
+    border: 1px solid var(--color-border);
+    border-bottom: 0;
+    border-radius: var(--radius-md) var(--radius-md) 0 0;
+}
+
+.lane {
+    position: relative;
+}
+
+.lane-white {
+    flex: 1;
+    background-color: var(--color-lane-white);
+}
+
+.lane-white:not(:first-child) {
+    border-left: 1px solid var(--color-lane-edge);
+}
+
+/* Translucent, so a white-key note under its edge still shows. */
+.lane-black {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: calc(var(--white-index) * var(--white-key-width) - var(--black-key-width) / 2);
+    z-index: 1;
+    width: var(--black-key-width);
+    background-color: var(--color-lane-black);
+}
+
+/* The line the notes fall to: where a note's bottom edge meets the keys. */
+.hit-line {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 2;
+    height: var(--hit-line-height);
+    background-color: var(--color-hit-line);
+}
+
+/* ==========================================================================
+   Piano
+   ========================================================================== */
+.piano {
+    height: var(--piano-height);
 }
 
 .key {

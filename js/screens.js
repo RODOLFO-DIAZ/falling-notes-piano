@@ -20,12 +20,13 @@ const SCREEN_BY_STATE = Object.freeze({
     [STATES.FREEPLAY]: "game-screen",
 });
 
-// The piano is only on screen, and only plays, while the player can play it.
+// The piano and its note lanes are only on screen, and the piano only
+// plays, while the player can play it.
 const PIANO_STATES = new Set([STATES.PLAYING, STATES.WAITING, STATES.FREEPLAY]);
 
 let currentState = STATES.START;
 let screensById = new Map();
-let pianoElement = null;
+let stageElement = null;
 
 function showState(state) {
     const visibleId = SCREEN_BY_STATE[state];
@@ -33,7 +34,7 @@ function showState(state) {
         screen.hidden = id !== visibleId;
     }
     const isPianoState = PIANO_STATES.has(state);
-    pianoElement.hidden = !isPianoState;
+    stageElement.hidden = !isPianoState;
     setPianoEnabled(isPianoState);
 }
 
@@ -59,10 +60,10 @@ function handleBackToMenuKey(event) {
     }
 }
 
-export function initScreens(appElement, piano) {
+export function initScreens(appElement, stage) {
     const screens = appElement.querySelectorAll(SCREEN_SELECTOR);
     screensById = new Map([...screens].map((screen) => [screen.id, screen]));
-    pianoElement = piano;
+    stageElement = stage;
     appElement.addEventListener("click", handleNextStateClick);
     document.addEventListener("keydown", handleBackToMenuKey);
     showState(currentState);

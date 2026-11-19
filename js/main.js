@@ -2,6 +2,7 @@
 // Module scripts run after the document is parsed, so the DOM is ready here.
 
 import { renderKeyboard } from "./keyboard.js";
+import { renderHighway } from "./highway.js";
 import { initPiano } from "./piano.js";
 import { bindKeyboardInput, bindPointerInput, bindFocusLoss } from "./input.js";
 import { audio } from "./audio.js";
@@ -39,12 +40,14 @@ function showSongErrors(errors) {
 
 function init() {
     const pianoElement = document.getElementById("piano");
+    const highwayElement = document.getElementById("highway");
     initPiano(renderKeyboard(pianoElement));
+    renderHighway(highwayElement);
     bindKeyboardInput();
     bindPointerInput(pianoElement);
     bindFocusLoss();
-    initScreens(document.getElementById("app"), pianoElement);
-    initGame(document.getElementById("game-title"));
+    initScreens(document.getElementById("app"), document.getElementById("stage"));
+    initGame(document.getElementById("game-title"), highwayElement);
     renderSongMenu(document.getElementById("song-list"), SONGS, startSong);
     document.getElementById("free-play-button").addEventListener("click", startFreePlay);
     bindStartScreen();
