@@ -255,13 +255,17 @@ p {
 /* ==========================================================================
    Note highway
    ========================================================================== */
-/* overflow: hidden clips the notes above the top edge before they fall in. */
+/* overflow: hidden clips the notes above the top edge before they fall in.
+   isolation keeps the layers below (shading, white notes, black notes,
+   hit line) stacked inside the highway. */
 .highway {
     height: var(--highway-height);
     overflow: hidden;
+    isolation: isolate;
     border: 1px solid var(--color-border);
     border-bottom: 0;
     border-radius: var(--radius-md) var(--radius-md) 0 0;
+    background-color: var(--color-lane-white);
 }
 
 .lane {
@@ -270,21 +274,28 @@ p {
 
 .lane-white {
     flex: 1;
-    background-color: var(--color-lane-white);
 }
 
 .lane-white:not(:first-child) {
     border-left: 1px solid var(--color-lane-edge);
 }
 
-/* Translucent, so a white-key note under its edge still shows. */
+/* A black lane overlaps half of each white lane beside it. Its shading is
+   drawn at the very back (z-index: -1), so a white-key note passing under
+   its edge shows whole instead of in two shades. */
 .lane-black {
     position: absolute;
     top: 0;
     bottom: 0;
     left: calc(var(--white-index) * var(--white-key-width) - var(--black-key-width) / 2);
-    z-index: 1;
     width: var(--black-key-width);
+}
+
+.lane-black::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
     background-color: var(--color-lane-black);
 }
 
@@ -301,7 +312,9 @@ p {
     will-change: transform;
 }
 
+/* Black-key notes sit above white-key ones, like black keys on a piano. */
 .lane-black .note {
+    z-index: 1;
     background-color: var(--color-note-black);
 }
 
