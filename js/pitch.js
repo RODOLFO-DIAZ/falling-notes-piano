@@ -52,3 +52,23 @@ export function frequencyOf(pitch) {
 export function isSharp(pitch) {
     return pitch.includes(SHARP_SIGN);
 }
+
+// Every pitch from left to right with whiteIndex, the number of white keys
+// to its left. A black key sits on the line between two white keys, at
+// whiteIndex white-key widths from the left edge. The piano keys and the
+// note lanes are both placed from this list, so they always line up.
+function buildKeyLayout() {
+    const layout = [];
+    let whiteIndex = 0;
+    for (const pitch of Object.values(KEY_TO_PITCH)) {
+        layout.push(Object.freeze({ pitch, whiteIndex }));
+        if (!isSharp(pitch)) {
+            whiteIndex += 1;
+        }
+    }
+    return Object.freeze(layout);
+}
+
+export const KEY_LAYOUT = buildKeyLayout();
+
+export const WHITE_KEY_COUNT = KEY_LAYOUT.filter((key) => !isSharp(key.pitch)).length;

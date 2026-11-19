@@ -20,12 +20,14 @@ const SCREEN_BY_STATE = Object.freeze({
     [STATES.FREEPLAY]: "game-screen",
 });
 
-// The piano is only on screen, and only plays, while the player can play it.
+// The piano and its note lanes are only on screen, and the piano only
+// plays, while the player can play it.
 const PIANO_STATES = new Set([STATES.PLAYING, STATES.WAITING, STATES.FREEPLAY]);
 
 let currentState = STATES.START;
 let screensById = new Map();
-let pianoElement = null;
+let stageElement = null;
+const stateListeners = [];
 
 function showState(state) {
     const visibleId = SCREEN_BY_STATE[state];
@@ -33,7 +35,7 @@ function showState(state) {
         screen.hidden = id !== visibleId;
     }
     const isPianoState = PIANO_STATES.has(state);
-    pianoElement.hidden = !isPianoState;
+    stageElement.hidden = !isPianoState;
     setPianoEnabled(isPianoState);
 }
 
@@ -59,10 +61,10 @@ function handleBackToMenuKey(event) {
     }
 }
 
-export function initScreens(appElement, piano) {
+export function initScreens(appElement, stage) {
     const screens = appElement.querySelectorAll(SCREEN_SELECTOR);
     screensById = new Map([...screens].map((screen) => [screen.id, screen]));
-    pianoElement = piano;
+    stageElement = stage;
     appElement.addEventListener("click", handleNextStateClick);
     document.addEventListener("keydown", handleBackToMenuKey);
     showState(currentState);
@@ -72,14 +74,25 @@ export function getState() {
     return currentState;
 }
 
+// Calls listener(nextState, previousState) after every state change, so a
+// module can react to any way of leaving a state (Escape, a button, the
+// end of the song) without each of them having to call it.
+export function onStateChange(listener) {
+    stateListeners.push(listener);
+}
+
 export function setState(nextState) {
     if (!canTransition(currentState, nextState)) {
         throw new Error(`Invalid state change: ${currentState} -> ${nextState}`);
     }
-    const isNewScreen = SCREEN_BY_STATE[nextState] !== SCREEN_BY_STATE[currentState];
+    const previousState = currentState;
+    const isNewScreen = SCREEN_BY_STATE[nextState] !== SCREEN_BY_STATE[previousState];
     currentState = nextState;
     showState(nextState);
     if (isNewScreen) {
         focusScreenTitle(nextState);
+    }
+    for (const listener of stateListeners) {
+        listener(nextState, previousState);
     }
 }

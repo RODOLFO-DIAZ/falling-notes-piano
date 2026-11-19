@@ -1,6 +1,6 @@
 // Piano keyboard view: builds one element per key from KEY_TO_PITCH.
 
-import { KEY_TO_PITCH, isSharp } from "./pitch.js";
+import { KEY_TO_PITCH, KEY_LAYOUT, WHITE_KEY_COUNT, isSharp } from "./pitch.js";
 
 const KEY_CODE_PREFIX = "Key";
 
@@ -43,18 +43,16 @@ function createKey(code, pitch) {
 // CSS places each black key from --white-index (white keys to its left)
 // and sizes white keys from --white-count, so no position is hardcoded.
 export function renderKeyboard(container) {
+    const codeByPitch = new Map(Object.entries(KEY_TO_PITCH).map(([code, pitch]) => [pitch, code]));
     const keysByPitch = new Map();
-    let whiteCount = 0;
-    for (const [code, pitch] of Object.entries(KEY_TO_PITCH)) {
-        const key = createKey(code, pitch);
+    for (const { pitch, whiteIndex } of KEY_LAYOUT) {
+        const key = createKey(codeByPitch.get(pitch), pitch);
         if (isSharp(pitch)) {
-            key.style.setProperty("--white-index", whiteCount);
-        } else {
-            whiteCount += 1;
+            key.style.setProperty("--white-index", whiteIndex);
         }
         keysByPitch.set(pitch, key);
         container.append(key);
     }
-    container.style.setProperty("--white-count", whiteCount);
+    container.style.setProperty("--white-count", WHITE_KEY_COUNT);
     return keysByPitch;
 }
