@@ -3,6 +3,7 @@
 
 import { renderKeyboard } from "./keyboard.js";
 import { renderHighway } from "./highway.js";
+import { initNotes } from "./notes.js";
 import { initPiano } from "./piano.js";
 import { bindKeyboardInput, bindPointerInput, bindFocusLoss } from "./input.js";
 import { audio } from "./audio.js";
@@ -42,7 +43,7 @@ function init() {
     const pianoElement = document.getElementById("piano");
     const highwayElement = document.getElementById("highway");
     initPiano(renderKeyboard(pianoElement));
-    renderHighway(highwayElement);
+    initNotes(renderHighway(highwayElement));
     bindKeyboardInput();
     bindPointerInput(pianoElement);
     bindFocusLoss();

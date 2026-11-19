@@ -36,6 +36,10 @@
     --color-lane-black: rgba(11, 12, 16, 0.55);
     --color-lane-edge: #262a36;
     --color-hit-line: var(--color-accent);
+    --color-note-white: #6fd3a8;
+    --color-note-black: #3fa57b;
+    --note-inset: 2px;
+    --radius-note: 4px;
 
     --piano-max-width: 48rem;
     --piano-height: 12rem;
@@ -282,6 +286,23 @@ p {
     z-index: 1;
     width: var(--black-key-width);
     background-color: var(--color-lane-black);
+}
+
+/* A note sits on the bottom of its lane, which is the hit line; the game
+   lifts it with transform by how far it still is from being due. Its
+   height is set from its length in beats. */
+.note {
+    position: absolute;
+    right: var(--note-inset);
+    bottom: 0;
+    left: var(--note-inset);
+    border-radius: var(--radius-note);
+    background-color: var(--color-note-white);
+    will-change: transform;
+}
+
+.lane-black .note {
+    background-color: var(--color-note-black);
 }
 
 /* The line the notes fall to: where a note's bottom edge meets the keys. */

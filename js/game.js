@@ -1,6 +1,7 @@
 // Game: the song being played and how a game starts.
 
 import { prepareSong } from "./timeline.js";
+import { renderNotes } from "./notes.js";
 import { STATES } from "./state.js";
 import { setState } from "./screens.js";
 
@@ -20,6 +21,7 @@ export function initGame(gameTitleElement, highway) {
 export function startSong(song) {
     activeSong = prepareSong(song);
     titleElement.textContent = activeSong.title;
+    renderNotes(activeSong.notes);
     highwayElement.hidden = false;
     setState(STATES.PLAYING);
 }
