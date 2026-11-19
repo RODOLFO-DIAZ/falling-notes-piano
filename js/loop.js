@@ -1,4 +1,6 @@
 // Game loop: moves the notes down on every frame the browser draws.
+// There is only ever one loop: starting a song stops the last one first,
+// so leaving and coming back never makes the notes fall faster.
 
 import { advanceBeat } from "./clock.js";
 import { placeNotes } from "./notes.js";
@@ -12,9 +14,12 @@ const LEAD_IN_BEATS = 4;
 
 let currentBeat = 0;
 let bpm = 0;
-// Time of the last frame. null until the first frame, which only takes
-// note of the time: there is no earlier frame to measure from.
+// Time of the last frame. null until the first frame after a start or a
+// resume, which only takes note of the time: measuring from the frame
+// before the pause would count the whole pause as song time.
 let lastTime = null;
+// Id of the frame already asked for, or null when the loop is stopped.
+let frameId = null;
 
 // time is the frame timestamp requestAnimationFrame passes in, in ms.
 function step(time) {
@@ -23,13 +28,30 @@ function step(time) {
     }
     lastTime = time;
     placeNotes(currentBeat);
-    requestAnimationFrame(step);
+    frameId = requestAnimationFrame(step);
+}
+
+// Stops the notes where they are; resumeLoop() carries on from there.
+export function stopLoop() {
+    if (frameId !== null) {
+        cancelAnimationFrame(frameId);
+        frameId = null;
+    }
+}
+
+// Does nothing if the loop is already running, so it can never run twice.
+export function resumeLoop() {
+    if (frameId !== null) {
+        return;
+    }
+    lastTime = null;
+    frameId = requestAnimationFrame(step);
 }
 
 export function startLoop(song) {
+    stopLoop();
     bpm = song.bpm;
     currentBeat = -LEAD_IN_BEATS;
-    lastTime = null;
     placeNotes(currentBeat);
-    requestAnimationFrame(step);
+    resumeLoop();
 }

@@ -27,6 +27,7 @@ const PIANO_STATES = new Set([STATES.PLAYING, STATES.WAITING, STATES.FREEPLAY]);
 let currentState = STATES.START;
 let screensById = new Map();
 let stageElement = null;
+const stateListeners = [];
 
 function showState(state) {
     const visibleId = SCREEN_BY_STATE[state];
@@ -73,14 +74,25 @@ export function getState() {
     return currentState;
 }
 
+// Calls listener(nextState, previousState) after every state change, so a
+// module can react to any way of leaving a state (Escape, a button, the
+// end of the song) without each of them having to call it.
+export function onStateChange(listener) {
+    stateListeners.push(listener);
+}
+
 export function setState(nextState) {
     if (!canTransition(currentState, nextState)) {
         throw new Error(`Invalid state change: ${currentState} -> ${nextState}`);
     }
-    const isNewScreen = SCREEN_BY_STATE[nextState] !== SCREEN_BY_STATE[currentState];
+    const previousState = currentState;
+    const isNewScreen = SCREEN_BY_STATE[nextState] !== SCREEN_BY_STATE[previousState];
     currentState = nextState;
     showState(nextState);
     if (isNewScreen) {
         focusScreenTitle(nextState);
+    }
+    for (const listener of stateListeners) {
+        listener(nextState, previousState);
     }
 }
