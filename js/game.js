@@ -2,6 +2,7 @@
 
 import { prepareSong } from "./timeline.js";
 import { renderNotes } from "./notes.js";
+import { startLoop } from "./loop.js";
 import { STATES } from "./state.js";
 import { setState } from "./screens.js";
 
@@ -24,6 +25,7 @@ export function startSong(song) {
     renderNotes(activeSong.notes);
     highwayElement.hidden = false;
     setState(STATES.PLAYING);
+    startLoop(activeSong);
 }
 
 // Free play has no song: the keys just sound, with no notes to follow,
