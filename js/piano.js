@@ -8,6 +8,7 @@ const ACTIVE_CLASS = "is-active";
 let keysByPitch = new Map();
 const pressedPitches = new Set();
 let isEnabled = false;
+const pressListeners = [];
 
 export function initPiano(keyElements) {
     keysByPitch = keyElements;
@@ -23,6 +24,12 @@ export function setPianoEnabled(enabled) {
     }
 }
 
+// Calls listener(pitch) after every key that sounds, so the game can
+// check it against the song without knowing where the press came from.
+export function onKeyPress(listener) {
+    pressListeners.push(listener);
+}
+
 export function pressKey(pitch) {
     if (!isEnabled || pressedPitches.has(pitch)) {
         return;
@@ -30,6 +37,9 @@ export function pressKey(pitch) {
     pressedPitches.add(pitch);
     keysByPitch.get(pitch)?.classList.add(ACTIVE_CLASS);
     audio.play(pitch);
+    for (const listener of pressListeners) {
+        listener(pitch);
+    }
 }
 
 export function releaseKey(pitch) {

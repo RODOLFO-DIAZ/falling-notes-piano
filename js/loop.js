@@ -18,7 +18,7 @@ let bpm = 0;
 // play. The song never moves past it, so a note can never fall through
 // the line before it is played.
 let stopBeat = Infinity;
-// Called once when the song reaches stopBeat.
+// Called each time the song reaches stopBeat.
 let onReachStop = null;
 // Time of the last frame. null until the first frame after a start or a
 // resume, which only takes note of the time: measuring from the frame
@@ -62,7 +62,12 @@ export function resumeLoop() {
     frameId = requestAnimationFrame(step);
 }
 
-// firstStop is the start of the first note; reachStop runs each time the
+// Moves the stop on (to the next note), before the song carries on.
+export function setStopBeat(beat) {
+    stopBeat = beat;
+}
+
+// firstStop is the first beat to stop at; reachStop runs each time the
 // song stops there or at a later stop.
 export function startLoop(song, firstStop, reachStop) {
     stopLoop();
