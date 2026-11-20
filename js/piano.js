@@ -4,6 +4,7 @@
 import { audio } from "./audio.js";
 
 const ACTIVE_CLASS = "is-active";
+const WRONG_CLASS = "is-wrong";
 
 let keysByPitch = new Map();
 const pressedPitches = new Set();
@@ -42,11 +43,19 @@ export function pressKey(pitch) {
     }
 }
 
+// Shows a held key in red until it is released. Only a held key can be
+// marked, so no key stays red with nothing pressing it.
+export function markWrongKey(pitch) {
+    if (pressedPitches.has(pitch)) {
+        keysByPitch.get(pitch)?.classList.add(WRONG_CLASS);
+    }
+}
+
 export function releaseKey(pitch) {
     if (!pressedPitches.delete(pitch)) {
         return;
     }
-    keysByPitch.get(pitch)?.classList.remove(ACTIVE_CLASS);
+    keysByPitch.get(pitch)?.classList.remove(ACTIVE_CLASS, WRONG_CLASS);
 }
 
 export function releaseAllKeys() {

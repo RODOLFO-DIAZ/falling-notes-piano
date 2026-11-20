@@ -3,7 +3,7 @@
 import { prepareSong } from "./timeline.js";
 import { renderNotes } from "./notes.js";
 import { startLoop, stopLoop, resumeLoop, setStopBeat } from "./loop.js";
-import { onKeyPress } from "./piano.js";
+import { onKeyPress, markWrongKey } from "./piano.js";
 import { STATES } from "./state.js";
 import { getState, setState, onStateChange } from "./screens.js";
 
@@ -12,6 +12,8 @@ const FREE_PLAY_TITLE = "Juego libre";
 let activeSong = null;
 // Index in activeSong.notes of the note the player has to play next.
 let nextNoteIndex = 0;
+// Wrong keys pressed while the song waited, in this game.
+let misses = 0;
 let titleElement = null;
 let highwayElement = null;
 
@@ -47,10 +49,16 @@ function handleReachLine() {
     setState(isSongOver() ? STATES.FINISHED : STATES.WAITING);
 }
 
-// Only the key of the waiting note moves the song on. Any other key, or a
-// key pressed while the notes fall, just sounds.
+// Only the key of the waiting note moves the song on; any other key is a
+// miss and shows red while held. Keys pressed while the notes fall just
+// sound: the player is not asked for a note yet.
 function handleKeyPress(pitch) {
-    if (getState() !== STATES.WAITING || pitch !== activeSong.notes[nextNoteIndex].pitch) {
+    if (getState() !== STATES.WAITING) {
+        return;
+    }
+    if (pitch !== activeSong.notes[nextNoteIndex].pitch) {
+        misses += 1;
+        markWrongKey(pitch);
         return;
     }
     nextNoteIndex += 1;
@@ -70,6 +78,7 @@ export function initGame(gameTitleElement, highway) {
 export function startSong(song) {
     activeSong = prepareSong(song);
     nextNoteIndex = 0;
+    misses = 0;
     titleElement.textContent = activeSong.title;
     renderNotes(activeSong.notes);
     highwayElement.hidden = false;

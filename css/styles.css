@@ -31,6 +31,10 @@
     --color-key-active-label: #14161c;
     --color-key-black-active: #4f5fd6;
     --color-key-black-active-label: #ffffff;
+    --color-key-wrong: #ff6b6b;
+    --color-key-wrong-label: #14161c;
+    --color-key-black-wrong: #c62f35;
+    --color-key-black-wrong-label: #ffffff;
 
     --color-lane-white: #1a1d25;
     --color-lane-black: rgba(11, 12, 16, 0.55);
@@ -377,6 +381,18 @@ p {
 .key-black.is-active {
     background-color: var(--color-key-black-active);
     color: var(--color-key-black-active-label);
+}
+
+/* Red instead of lit while a wrong key is held. Comes after .is-active,
+   with the same weight, so it wins over it. */
+.key-white.is-wrong {
+    background-color: var(--color-key-wrong);
+    color: var(--color-key-wrong-label);
+}
+
+.key-black.is-wrong {
+    background-color: var(--color-key-black-wrong);
+    color: var(--color-key-black-wrong-label);
 }
 
 .key-label-alt {
