@@ -48,7 +48,7 @@ function init() {
     bindPointerInput(pianoElement);
     bindFocusLoss();
     initScreens(document.getElementById("app"), document.getElementById("stage"));
-    initGame(document.getElementById("game-title"), highwayElement);
+    initGame(document.getElementById("game-title"), highwayElement, document.getElementById("game-stats"));
     renderSongMenu(document.getElementById("song-list"), SONGS, startSong);
     document.getElementById("free-play-button").addEventListener("click", startFreePlay);
     bindStartScreen();

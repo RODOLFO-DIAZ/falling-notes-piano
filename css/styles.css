@@ -132,6 +132,32 @@ p {
     color: var(--color-muted);
 }
 
+/* Progress and misses under the song title. Tabular figures keep the
+   numbers from shifting as they change. */
+.game-stats {
+    display: flex;
+    justify-content: center;
+    gap: var(--space-lg);
+    margin: 0 0 var(--space-md);
+}
+
+.game-stat dt {
+    color: var(--color-muted);
+    font-size: 0.875rem;
+}
+
+.game-stat dd {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+}
+
+/* display: flex above would otherwise keep it on screen in free play. */
+.game-stats[hidden] {
+    display: none;
+}
+
 /* Shown instead of starting when the song data is invalid. */
 .screen-error {
     margin-top: var(--space-md);

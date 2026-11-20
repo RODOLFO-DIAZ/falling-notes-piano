@@ -16,6 +16,15 @@ let nextNoteIndex = 0;
 let misses = 0;
 let titleElement = null;
 let highwayElement = null;
+let statsElement = null;
+let progressElement = null;
+let missesElement = null;
+
+// Notes played out of the song's total, and misses so far.
+function renderStats() {
+    progressElement.textContent = `${nextNoteIndex} / ${activeSong.notes.length}`;
+    missesElement.textContent = misses;
+}
 
 // The notes only fall while playing. Leaving playing by any way (Escape,
 // the menu button, waiting at the line, the end of the song) stops the
@@ -59,16 +68,21 @@ function handleKeyPress(pitch) {
     if (pitch !== activeSong.notes[nextNoteIndex].pitch) {
         misses += 1;
         markWrongKey(pitch);
+        renderStats();
         return;
     }
     nextNoteIndex += 1;
+    renderStats();
     setStopBeat(nextStopBeat());
     setState(STATES.PLAYING);
 }
 
-export function initGame(gameTitleElement, highway) {
+export function initGame(gameTitleElement, highway, gameStats) {
     titleElement = gameTitleElement;
     highwayElement = highway;
+    statsElement = gameStats;
+    progressElement = gameStats.querySelector('[data-stat="progress"]');
+    missesElement = gameStats.querySelector('[data-stat="misses"]');
     onStateChange(handleStateChange);
     onKeyPress(handleKeyPress);
 }
@@ -80,18 +94,21 @@ export function startSong(song) {
     nextNoteIndex = 0;
     misses = 0;
     titleElement.textContent = activeSong.title;
+    renderStats();
     renderNotes(activeSong.notes);
     highwayElement.hidden = false;
+    statsElement.hidden = false;
     setState(STATES.PLAYING);
     startLoop(activeSong, nextStopBeat(), handleReachLine);
 }
 
 // Free play has no song: the keys just sound, with no notes to follow,
-// so the empty lanes are hidden too.
+// so the empty lanes and the score are hidden too.
 export function startFreePlay() {
     activeSong = null;
     titleElement.textContent = FREE_PLAY_TITLE;
     highwayElement.hidden = true;
+    statsElement.hidden = true;
     setState(STATES.FREEPLAY);
 }
 
