@@ -23,6 +23,11 @@ function handleStateChange(nextState, previousState) {
     }
 }
 
+// The next note has reached the line: the song waits there for the player.
+function handleReachLine() {
+    setState(STATES.WAITING);
+}
+
 export function initGame(gameTitleElement, highway) {
     titleElement = gameTitleElement;
     highwayElement = highway;
@@ -37,7 +42,7 @@ export function startSong(song) {
     renderNotes(activeSong.notes);
     highwayElement.hidden = false;
     setState(STATES.PLAYING);
-    startLoop(activeSong);
+    startLoop(activeSong, activeSong.notes[0].start, handleReachLine);
 }
 
 // Free play has no song: the keys just sound, with no notes to follow,
