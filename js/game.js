@@ -17,13 +17,17 @@ let misses = 0;
 let titleElement = null;
 let highwayElement = null;
 let statsElement = null;
-let progressElement = null;
-let missesElement = null;
+let resultsSongElement = null;
+// The score under the song title and the one on the results screen: both
+// show the same numbers, so they are filled by the same code.
+let statLists = [];
 
 // Notes played out of the song's total, and misses so far.
 function renderStats() {
-    progressElement.textContent = `${nextNoteIndex} / ${activeSong.notes.length}`;
-    missesElement.textContent = misses;
+    for (const list of statLists) {
+        list.querySelector('[data-stat="progress"]').textContent = `${nextNoteIndex} / ${activeSong.notes.length}`;
+        list.querySelector('[data-stat="misses"]').textContent = misses;
+    }
 }
 
 // The notes only fall while playing. Leaving playing by any way (Escape,
@@ -55,7 +59,12 @@ function nextStopBeat() {
 // The song has reached its stop: it waits there for the next note, or
 // ends if there is none left.
 function handleReachLine() {
-    setState(isSongOver() ? STATES.FINISHED : STATES.WAITING);
+    if (!isSongOver()) {
+        setState(STATES.WAITING);
+        return;
+    }
+    resultsSongElement.textContent = activeSong.title;
+    setState(STATES.FINISHED);
 }
 
 // Only the key of the waiting note moves the song on; any other key is a
@@ -77,12 +86,13 @@ function handleKeyPress(pitch) {
     setState(STATES.PLAYING);
 }
 
-export function initGame(gameTitleElement, highway, gameStats) {
-    titleElement = gameTitleElement;
-    highwayElement = highway;
-    statsElement = gameStats;
-    progressElement = gameStats.querySelector('[data-stat="progress"]');
-    missesElement = gameStats.querySelector('[data-stat="misses"]');
+// elements: { title, highway, stats, resultsSong, resultsStats }.
+export function initGame(elements) {
+    titleElement = elements.title;
+    highwayElement = elements.highway;
+    statsElement = elements.stats;
+    resultsSongElement = elements.resultsSong;
+    statLists = [elements.stats, elements.resultsStats];
     onStateChange(handleStateChange);
     onKeyPress(handleKeyPress);
 }
@@ -100,6 +110,13 @@ export function startSong(song) {
     statsElement.hidden = false;
     setState(STATES.PLAYING);
     startLoop(activeSong, nextStopBeat(), handleReachLine);
+}
+
+// "Jugar de nuevo": the same song again from the start, with the score
+// back at zero. activeSong already has its starts; startSong works them
+// out again from the beats, which gives the same ones.
+export function restartSong() {
+    startSong(activeSong);
 }
 
 // Free play has no song: the keys just sound, with no notes to follow,

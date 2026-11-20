@@ -247,6 +247,25 @@ p {
     cursor: not-allowed;
 }
 
+/* The second choice next to a main button, such as going back. */
+.button-secondary {
+    box-shadow: inset 0 0 0 2px var(--color-accent);
+    background-color: transparent;
+    color: var(--color-text);
+}
+
+.button-secondary:hover {
+    background-color: var(--color-border);
+}
+
+/* Buttons side by side, one under the other on narrow screens. */
+.screen-actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    column-gap: var(--space-md);
+}
+
 .button:focus-visible {
     outline: 3px solid var(--color-text);
     outline-offset: 3px;

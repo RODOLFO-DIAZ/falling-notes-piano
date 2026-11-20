@@ -51,7 +51,21 @@
 
         <section id="results-screen" class="screen" aria-labelledby="results-title" hidden>
             <h2 id="results-title" class="screen-title" tabindex="-1">Canción terminada</h2>
-            <button class="button" type="button" data-next-state="menu">Volver al menú</button>
+            <p id="results-song" class="screen-text"></p>
+            <dl id="results-stats" class="game-stats">
+                <div class="game-stat">
+                    <dt>Notas</dt>
+                    <dd data-stat="progress">0 / 0</dd>
+                </div>
+                <div class="game-stat">
+                    <dt>Fallos</dt>
+                    <dd data-stat="misses">0</dd>
+                </div>
+            </dl>
+            <div class="screen-actions">
+                <button id="play-again-button" class="button" type="button">Jugar de nuevo</button>
+                <button class="button button-secondary" type="button" data-next-state="menu">Volver al menú</button>
+            </div>
         </section>
 
         <div id="stage" class="stage">
