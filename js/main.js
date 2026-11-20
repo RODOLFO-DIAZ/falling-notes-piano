@@ -12,7 +12,7 @@ import { validateSongs } from "./validation.js";
 import { STATES } from "./state.js";
 import { initScreens, setState } from "./screens.js";
 import { renderSongMenu } from "./menu.js";
-import { initGame, startSong, startFreePlay } from "./game.js";
+import { initGame, startSong, startFreePlay, restartSong } from "./game.js";
 
 // The click on Start is the user gesture the browser needs to allow sound.
 function bindStartScreen() {
@@ -48,9 +48,16 @@ function init() {
     bindPointerInput(pianoElement);
     bindFocusLoss();
     initScreens(document.getElementById("app"), document.getElementById("stage"));
-    initGame(document.getElementById("game-title"), highwayElement);
+    initGame({
+        title: document.getElementById("game-title"),
+        highway: highwayElement,
+        stats: document.getElementById("game-stats"),
+        resultsSong: document.getElementById("results-song"),
+        resultsStats: document.getElementById("results-stats"),
+    });
     renderSongMenu(document.getElementById("song-list"), SONGS, startSong);
     document.getElementById("free-play-button").addEventListener("click", startFreePlay);
+    document.getElementById("play-again-button").addEventListener("click", restartSong);
     bindStartScreen();
 
     const songErrors = validateSongs(SONGS);

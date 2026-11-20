@@ -31,6 +31,10 @@
     --color-key-active-label: #14161c;
     --color-key-black-active: #4f5fd6;
     --color-key-black-active-label: #ffffff;
+    --color-key-wrong: #ff6b6b;
+    --color-key-wrong-label: #14161c;
+    --color-key-black-wrong: #c62f35;
+    --color-key-black-wrong-label: #ffffff;
 
     --color-lane-white: #1a1d25;
     --color-lane-black: rgba(11, 12, 16, 0.55);
@@ -128,6 +132,32 @@ p {
     color: var(--color-muted);
 }
 
+/* Progress and misses under the song title. Tabular figures keep the
+   numbers from shifting as they change. */
+.game-stats {
+    display: flex;
+    justify-content: center;
+    gap: var(--space-lg);
+    margin: 0 0 var(--space-md);
+}
+
+.game-stat dt {
+    color: var(--color-muted);
+    font-size: 0.875rem;
+}
+
+.game-stat dd {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+}
+
+/* display: flex above would otherwise keep it on screen in free play. */
+.game-stats[hidden] {
+    display: none;
+}
+
 /* Shown instead of starting when the song data is invalid. */
 .screen-error {
     margin-top: var(--space-md);
@@ -215,6 +245,25 @@ p {
     background-color: var(--color-border);
     color: var(--color-muted);
     cursor: not-allowed;
+}
+
+/* The second choice next to a main button, such as going back. */
+.button-secondary {
+    box-shadow: inset 0 0 0 2px var(--color-accent);
+    background-color: transparent;
+    color: var(--color-text);
+}
+
+.button-secondary:hover {
+    background-color: var(--color-border);
+}
+
+/* Buttons side by side, one under the other on narrow screens. */
+.screen-actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    column-gap: var(--space-md);
 }
 
 .button:focus-visible {
@@ -377,6 +426,18 @@ p {
 .key-black.is-active {
     background-color: var(--color-key-black-active);
     color: var(--color-key-black-active-label);
+}
+
+/* Red instead of lit while a wrong key is held. Comes after .is-active,
+   with the same weight, so it wins over it. */
+.key-white.is-wrong {
+    background-color: var(--color-key-wrong);
+    color: var(--color-key-wrong-label);
+}
+
+.key-black.is-wrong {
+    background-color: var(--color-key-black-wrong);
+    color: var(--color-key-black-wrong-label);
 }
 
 .key-label-alt {
