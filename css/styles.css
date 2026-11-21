@@ -11,6 +11,8 @@
     --color-accent-hover: #98a4ff;
     --color-button-text: #14161c;
     --color-error: #ff8080;
+    --color-success: #6fd3a8;
+    --color-accent-soft: rgba(124, 140, 255, 0.16);
 
     --font-body: system-ui, "Segoe UI", Roboto, Arial, sans-serif;
 
@@ -156,6 +158,48 @@ p {
 /* display: flex above would otherwise keep it on screen in free play. */
 .game-stats[hidden] {
     display: none;
+}
+
+/* ==========================================================================
+   Game states: which one the player is in, at a glance
+   ========================================================================== */
+/* What the player is expected to do right now, under the song title. */
+.game-status {
+    display: inline-block;
+    margin: 0 0 var(--space-md);
+    padding: var(--space-xs) var(--space-md);
+    border: 1px solid var(--color-border);
+    border-radius: 999px;
+    color: var(--color-muted);
+    font-size: 0.875rem;
+}
+
+/* Waiting: the notes have stopped until the right key, so the status, the
+   lanes and the hit line all switch to the accent color. */
+.app[data-state="waiting"] .game-status {
+    border-color: var(--color-accent);
+    background-color: var(--color-accent-soft);
+    color: var(--color-text);
+    font-weight: 600;
+}
+
+.app[data-state="waiting"] .highway {
+    border-color: var(--color-accent);
+}
+
+.app[data-state="waiting"] .hit-line {
+    box-shadow: 0 0 12px 2px var(--color-hit-line);
+}
+
+/* Finished: the results card is framed in green, so the end of a song
+   never looks like the menu or a game. */
+.screen-results {
+    border-color: var(--color-success);
+    border-top-width: 4px;
+}
+
+.screen-results .screen-title {
+    color: var(--color-success);
 }
 
 /* Shown instead of starting when the song data is invalid. */

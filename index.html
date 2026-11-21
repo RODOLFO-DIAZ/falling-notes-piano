@@ -35,6 +35,7 @@
 
         <section id="game-screen" class="screen" aria-labelledby="game-title" hidden>
             <h2 id="game-title" class="screen-title" tabindex="-1">Partida</h2>
+            <p id="game-status" class="game-status" aria-live="polite"></p>
             <dl id="game-stats" class="game-stats">
                 <div class="game-stat">
                     <dt>Progreso</dt>
@@ -49,7 +50,7 @@
             <button class="button" type="button" data-next-state="menu">Volver al menú</button>
         </section>
 
-        <section id="results-screen" class="screen" aria-labelledby="results-title" hidden>
+        <section id="results-screen" class="screen screen-results"aria-labelledby="results-title" hidden>
             <h2 id="results-title" class="screen-title" tabindex="-1">Canción terminada</h2>
             <p id="results-song" class="screen-text"></p>
             <dl id="results-stats" class="game-stats">

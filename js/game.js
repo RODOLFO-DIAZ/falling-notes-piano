@@ -9,12 +9,21 @@ import { getState, setState, onStateChange } from "./screens.js";
 
 const FREE_PLAY_TITLE = "Juego libre";
 
+// What the player is expected to do, under the song title. Waiting is the
+// one that matters most: the notes have stopped and it says why.
+const STATUS_BY_STATE = Object.freeze({
+    [STATES.PLAYING]: "Las notas caen hacia la línea",
+    [STATES.WAITING]: "Pulsa la tecla de la nota en la línea",
+    [STATES.FREEPLAY]: "Toca libremente, sin notas que seguir",
+});
+
 let activeSong = null;
 // Index in activeSong.notes of the note the player has to play next.
 let nextNoteIndex = 0;
 // Wrong keys pressed while the song waited, in this game.
 let misses = 0;
 let titleElement = null;
+let statusElement = null;
 let highwayElement = null;
 let statsElement = null;
 let resultsSongElement = null;
@@ -34,6 +43,9 @@ function renderStats() {
 // the menu button, waiting at the line, the end of the song) stops the
 // loop, and coming back from waiting carries on from the same beat.
 function handleStateChange(nextState, previousState) {
+    if (nextState in STATUS_BY_STATE) {
+        statusElement.textContent = STATUS_BY_STATE[nextState];
+    }
     if (nextState !== STATES.PLAYING) {
         stopLoop();
     } else if (previousState === STATES.WAITING) {
@@ -86,9 +98,10 @@ function handleKeyPress(pitch) {
     setState(STATES.PLAYING);
 }
 
-// elements: { title, highway, stats, resultsSong, resultsStats }.
+// elements: { title, status, highway, stats, resultsSong, resultsStats }.
 export function initGame(elements) {
     titleElement = elements.title;
+    statusElement = elements.status;
     highwayElement = elements.highway;
     statsElement = elements.stats;
     resultsSongElement = elements.resultsSong;

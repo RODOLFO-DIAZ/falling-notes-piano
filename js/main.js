@@ -50,6 +50,7 @@ function init() {
     initScreens(document.getElementById("app"), document.getElementById("stage"));
     initGame({
         title: document.getElementById("game-title"),
+        status: document.getElementById("game-status"),
         highway: highwayElement,
         stats: document.getElementById("game-stats"),
         resultsSong: document.getElementById("results-song"),
