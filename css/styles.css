@@ -47,9 +47,14 @@
     --note-inset: 2px;
     --radius-note: 4px;
 
-    --piano-max-width: 48rem;
-    --piano-height: 12rem;
-    --highway-height: 20rem;
+    /* The stage grows with the window up to 64rem. Heights follow the
+       window height, so the bar, lanes and piano fit without scrolling
+       from 1024x768 up. The highway never goes past 20rem: that is the
+       4-beat lead-in at 80px a beat, so the first notes always come in
+       from the top edge. */
+    --stage-max-width: 64rem;
+    --piano-height: clamp(8rem, 22vh, 12rem);
+    --highway-height: clamp(12rem, 36vh, 20rem);
     --hit-line-height: 3px;
     --black-key-width-ratio: 0.6;
     --black-key-height: 62%;
@@ -113,6 +118,15 @@ p {
     font-size: 0.875rem;
 }
 
+/* While the piano is on screen, tighter spacing leaves the height to the
+   lanes and the keys. */
+.app[data-state="playing"],
+.app[data-state="waiting"],
+.app[data-state="freeplay"] {
+    gap: var(--space-md);
+    padding: var(--space-md) var(--space-lg);
+}
+
 /* ==========================================================================
    Screens
    ========================================================================== */
@@ -158,6 +172,58 @@ p {
 /* display: flex above would otherwise keep it on screen in free play. */
 .game-stats[hidden] {
     display: none;
+}
+
+/* ==========================================================================
+   Game bar: a single strip as wide as the stage, above the lanes
+   ========================================================================== */
+/* Title and status on the left, score in the middle, the way back on the
+   right, so the card takes two lines of height instead of six. */
+.screen-game {
+    display: grid;
+    grid-template-columns: 1fr auto auto;
+    grid-template-areas:
+        "title  stats back"
+        "status stats hint";
+    align-items: center;
+    column-gap: var(--space-lg);
+    row-gap: var(--space-xs);
+    width: min(100%, var(--stage-max-width));
+    padding: var(--space-md) var(--space-lg);
+    text-align: left;
+}
+
+.screen-game[hidden] {
+    display: none;
+}
+
+.screen-game .screen-title {
+    grid-area: title;
+    margin: 0;
+}
+
+.screen-game .game-status {
+    grid-area: status;
+    justify-self: start;
+    margin: 0;
+}
+
+.screen-game .game-stats {
+    grid-area: stats;
+    margin: 0;
+}
+
+/* .screen-game in front so it wins over .button, which comes later. */
+.screen-game .game-back {
+    grid-area: back;
+    justify-self: end;
+    margin-top: 0;
+}
+
+.game-hint {
+    grid-area: hint;
+    justify-self: end;
+    font-size: 0.875rem;
 }
 
 /* ==========================================================================
@@ -321,7 +387,7 @@ p {
 .stage {
     display: flex;
     flex-direction: column;
-    width: min(100%, var(--piano-max-width));
+    width: min(100%, var(--stage-max-width));
 }
 
 /* display: flex above would otherwise keep a hidden stage on screen. */

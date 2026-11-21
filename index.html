@@ -33,7 +33,7 @@
             <button id="free-play-button" class="button" type="button">Juego libre</button>
         </section>
 
-        <section id="game-screen" class="screen" aria-labelledby="game-title" hidden>
+        <section id="game-screen" class="screen screen-game" aria-labelledby="game-title" hidden>
             <h2 id="game-title" class="screen-title" tabindex="-1">Partida</h2>
             <p id="game-status" class="game-status" aria-live="polite"></p>
             <dl id="game-stats" class="game-stats">
@@ -46,8 +46,8 @@
                     <dd data-stat="misses">0</dd>
                 </div>
             </dl>
-            <p class="screen-text">Pulsa Esc para volver al menú.</p>
-            <button class="button" type="button" data-next-state="menu">Volver al menú</button>
+            <p class="screen-text game-hint">Pulsa Esc para volver al menú.</p>
+            <button class="button game-back" type="button" data-next-state="menu">Volver al menú</button>
         </section>
 
         <section id="results-screen" class="screen screen-results"aria-labelledby="results-title" hidden>

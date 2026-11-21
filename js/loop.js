@@ -9,7 +9,8 @@ const MS_PER_SECOND = 1000;
 
 // The song starts this many beats before its first note, so the first
 // blocks come into view at the top and fall to the line instead of
-// appearing on it. 4 beats x PX_PER_BEAT fills the 20rem highway.
+// appearing on it. 4 beats x PX_PER_BEAT fills the highway at its
+// tallest (20rem); on shorter windows they start above its top edge.
 const LEAD_IN_BEATS = 4;
 
 let currentBeat = 0;
