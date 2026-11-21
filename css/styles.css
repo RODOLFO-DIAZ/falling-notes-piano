@@ -24,6 +24,11 @@
     --radius-md: 8px;
     --radius-key: 0 0 6px 6px;
 
+    --focus-ring: 3px solid var(--color-text);
+    --focus-offset: 3px;
+    --duration-fast: 150ms;
+    --duration-pulse: 1.2s;
+
     --color-key-white: #f4f4f0;
     --color-key-white-label: #3a3f4f;
     --color-key-black: #14161c;
@@ -84,6 +89,20 @@ h1,
 h2,
 p {
     margin: 0;
+}
+
+/* One focus ring for every control, shown only when moving with the
+   keyboard, so it never appears on a mouse click. */
+:focus-visible {
+    outline: var(--focus-ring);
+    outline-offset: var(--focus-offset);
+}
+
+/* Screen titles take focus from code when the screen changes, so keyboard
+   and screen reader users land on the new screen. They are not controls,
+   so they get no ring. */
+[tabindex="-1"]:focus {
+    outline: none;
 }
 
 /* ==========================================================================
@@ -317,11 +336,6 @@ p {
     background-color: var(--color-surface);
 }
 
-.song-button:focus-visible {
-    outline: 3px solid var(--color-text);
-    outline-offset: 3px;
-}
-
 .song-title {
     font-weight: 600;
 }
@@ -374,11 +388,6 @@ p {
     flex-wrap: wrap;
     justify-content: center;
     column-gap: var(--space-md);
-}
-
-.button:focus-visible {
-    outline: 3px solid var(--color-text);
-    outline-offset: 3px;
 }
 
 /* ==========================================================================
@@ -554,4 +563,33 @@ p {
     font-size: 0.75rem;
     font-weight: 400;
     opacity: 0.75;
+}
+
+/* ==========================================================================
+   Motion: only for players who have not asked their system for less
+   ========================================================================== */
+/* With prefers-reduced-motion: reduce none of this applies: buttons change
+   at once and the hit line glows without pulsing. The notes still fall,
+   since following them is the game itself. */
+@media (prefers-reduced-motion: no-preference) {
+    .button,
+    .song-button {
+        transition:
+            background-color var(--duration-fast) ease-out,
+            border-color var(--duration-fast) ease-out;
+    }
+
+    .app[data-state="waiting"] .hit-line {
+        animation: hit-line-pulse var(--duration-pulse) ease-in-out infinite alternate;
+    }
+}
+
+@keyframes hit-line-pulse {
+    from {
+        box-shadow: 0 0 4px 1px var(--color-hit-line);
+    }
+
+    to {
+        box-shadow: 0 0 16px 4px var(--color-hit-line);
+    }
 }
