@@ -26,10 +26,14 @@ const PIANO_STATES = new Set([STATES.PLAYING, STATES.WAITING, STATES.FREEPLAY]);
 
 let currentState = STATES.START;
 let screensById = new Map();
+let appElement = null;
 let stageElement = null;
 const stateListeners = [];
 
+// data-state on the app lets the styles tell states apart, including
+// playing and waiting, which share a screen.
 function showState(state) {
+    appElement.dataset.state = state;
     const visibleId = SCREEN_BY_STATE[state];
     for (const [id, screen] of screensById) {
         screen.hidden = id !== visibleId;
@@ -61,9 +65,10 @@ function handleBackToMenuKey(event) {
     }
 }
 
-export function initScreens(appElement, stage) {
-    const screens = appElement.querySelectorAll(SCREEN_SELECTOR);
+export function initScreens(app, stage) {
+    const screens = app.querySelectorAll(SCREEN_SELECTOR);
     screensById = new Map([...screens].map((screen) => [screen.id, screen]));
+    appElement = app;
     stageElement = stage;
     appElement.addEventListener("click", handleNextStateClick);
     document.addEventListener("keydown", handleBackToMenuKey);
