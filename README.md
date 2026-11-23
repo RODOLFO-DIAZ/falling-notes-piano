@@ -8,13 +8,13 @@ A piano trainer that runs in the browser. Notes fall toward a hit line and you p
 
 1. Open the live demo and press **Empezar**. Browsers only allow sound after a click, so this first click turns it on.
 2. Pick a song from the menu, or **Juego libre** to play without notes.
-3. Colored blocks fall down the lane above each key. A block's height shows how long the note lasts.
+3. Colored blocks fall down the lane above each key: light green for white keys, dark green for black keys. A block's height shows how long the note lasts.
 4. When a block reaches the line, the song stops and waits. Press the key under it to carry on.
    - The status under the song title tells you whether the notes are falling or waiting for you.
    - A wrong key still sounds, turns red while you hold it and counts as a miss.
    - Keys you press while the notes are falling just sound; nothing is counted.
    - For the same note twice in a row, release the key and press it again.
-5. Progress (`notes played / total`) and misses are shown above the lanes. After the last note, the results screen shows your score, with **Jugar de nuevo** to play the same song again and **Volver al menú** to pick another one.
+5. Progress (`notes played / total`) and misses are shown above the lanes. After the last note, the results screen shows your score and a few words of encouragement that depend on your misses, with **Jugar de nuevo** to play the same song again and **Volver al menú** to pick another one.
 
 Press **Esc** at any time during a song, in free play or on the results screen to go back to the menu.
 
@@ -36,6 +36,7 @@ The piano has 17 keys, from C4 to E5. They follow the layout of a piano on two r
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
 | Note | C4 | C#4 | D4 | D#4 | E4 | F4 | F#4 | G4 | G#4 | A4 | A#4 | B4 | C5 | C#5 | D5 | D#5 | E5 |
 
+- Each key on screen shows its note name in Spanish solfège (Do, Re, Mi… with no octave), and under it, smaller, the computer key that plays it.
 - Keys are read by their position, so the layout works the same on Spanish, US and other keyboards. The last key is **Ñ** on a Spanish keyboard and **;** on a US one.
 - You can also click or tap the keys on screen, with several fingers at once on a touch screen.
 - Shortcuts with Ctrl, Alt or Cmd are left to the browser and never play a note.
