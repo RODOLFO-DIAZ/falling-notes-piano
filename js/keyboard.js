@@ -1,6 +1,6 @@
 // Piano keyboard view: builds one element per key from KEY_TO_PITCH.
 
-import { KEY_TO_PITCH, KEY_LAYOUT, WHITE_KEY_COUNT, isSharp } from "./pitch.js";
+import { KEY_TO_PITCH, KEY_LAYOUT, WHITE_KEY_COUNT, isSharp, solfegeOf } from "./pitch.js";
 
 const KEY_CODE_PREFIX = "Key";
 
@@ -21,8 +21,11 @@ function createLabel(className, text) {
     return label;
 }
 
+// The note name goes first and largest, since it is what the player is
+// learning; the keyboard letter under it says which key plays it.
 function createKey(code, pitch) {
     const label = labelOf(code);
+    const noteName = solfegeOf(pitch);
     const key = document.createElement("button");
     key.type = "button";
     // The computer keyboard already plays every key, so tabbing through
@@ -30,8 +33,8 @@ function createKey(code, pitch) {
     key.tabIndex = -1;
     key.className = isSharp(pitch) ? "key key-black" : "key key-white";
     key.dataset.pitch = pitch;
-    key.setAttribute("aria-label", `${pitch}, tecla ${label.main}`);
-    key.append(createLabel("key-label", label.main));
+    key.setAttribute("aria-label", `${noteName} (${pitch}), tecla ${label.main}`);
+    key.append(createLabel("key-note", noteName), createLabel("key-label", label.main));
     if (label.alt) {
         key.append(createLabel("key-label-alt", label.alt));
     }

@@ -55,6 +55,7 @@ function init() {
         stats: document.getElementById("game-stats"),
         resultsSong: document.getElementById("results-song"),
         resultsStats: document.getElementById("results-stats"),
+        resultsMessage: document.getElementById("results-message"),
     });
     renderSongMenu(document.getElementById("song-list"), SONGS, startSong);
     document.getElementById("free-play-button").addEventListener("click", startFreePlay);

@@ -53,6 +53,17 @@ export function isSharp(pitch) {
     return pitch.includes(SHARP_SIGN);
 }
 
+// Letter name -> Spanish note name (solfège), the way the player reads it.
+const SOLFEGE_BY_LETTER = Object.freeze({
+    C: "Do", D: "Re", E: "Mi", F: "Fa", G: "Sol", A: "La", B: "Si",
+});
+
+// "C#4" -> "Do#". No octave: where the key sits on the piano already
+// tells C4 from C5.
+export function solfegeOf(pitch) {
+    return SOLFEGE_BY_LETTER[pitch[0]] + (isSharp(pitch) ? SHARP_SIGN : "");
+}
+
 // Every pitch from left to right with whiteIndex, the number of white keys
 // to its left. A black key sits on the line between two white keys, at
 // whiteIndex white-key widths from the left edge. The piano keys and the
