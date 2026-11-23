@@ -47,8 +47,11 @@
     --color-lane-black: rgba(11, 12, 16, 0.55);
     --color-lane-edge: #262a36;
     --color-hit-line: var(--color-accent);
-    --color-note-white: #6fd3a8;
-    --color-note-black: #3fa57b;
+    /* Light green for white-key notes, dark green for black-key ones:
+       the player tells them apart at a glance, and both still stand
+       out on their lane. */
+    --color-note-white: #a3f0cc;
+    --color-note-black: #2e8a5f;
     --note-inset: 2px;
     --radius-note: 4px;
 
