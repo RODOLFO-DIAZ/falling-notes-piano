@@ -157,7 +157,3 @@ export function startFreePlay() {
     statsElement.hidden = true;
     setState(STATES.FREEPLAY);
 }
-
-export function getActiveSong() {
-    return activeSong;
-}

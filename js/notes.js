@@ -20,7 +20,7 @@ function createBlock(note) {
 
 // Removes the blocks of the last song, so starting again never stacks a
 // second copy of the notes in the lanes.
-export function clearNotes() {
+function clearNotes() {
     for (const { element } of blocks) {
         element.remove();
     }
