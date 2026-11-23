@@ -516,7 +516,7 @@ p {
     border: 1px solid var(--color-key-edge);
     border-radius: var(--radius-key);
     font: inherit;
-    font-weight: 600;
+    line-height: 1.2;
     cursor: pointer;
     touch-action: none;
 }
@@ -560,6 +560,17 @@ p {
 .key-black.is-wrong {
     background-color: var(--color-key-black-wrong);
     color: var(--color-key-black-wrong-label);
+}
+
+/* The note name stands out; the keyboard letter under it is smaller and
+   lighter. Sizes in em follow the key, so black keys get both smaller. */
+.key-note {
+    font-size: 1.125em;
+    font-weight: 700;
+}
+
+.key-label {
+    font-size: 0.8125em;
 }
 
 .key-label-alt {
