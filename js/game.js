@@ -17,6 +17,14 @@ const STATUS_BY_STATE = Object.freeze({
     [STATES.FREEPLAY]: "Toca libremente, sin notas que seguir",
 });
 
+// Said on the results screen to encourage the player, from the fewest
+// misses up: the first one whose maxMisses covers the game is shown.
+const END_MESSAGES = Object.freeze([
+    { maxMisses: 0, text: "¡Perfecta! Sin un solo fallo. ¿Te animas con otra canción?" },
+    { maxMisses: 3, text: "¡Muy bien! Casi sin fallos: una vez más y te sale perfecta." },
+    { maxMisses: Infinity, text: "¡La terminaste! Cada vez que la toques te saldrá mejor. ¡Sigue practicando!" },
+]);
+
 let activeSong = null;
 // Index in activeSong.notes of the note the player has to play next.
 let nextNoteIndex = 0;
@@ -27,6 +35,7 @@ let statusElement = null;
 let highwayElement = null;
 let statsElement = null;
 let resultsSongElement = null;
+let resultsMessageElement = null;
 // The score under the song title and the one on the results screen: both
 // show the same numbers, so they are filled by the same code.
 let statLists = [];
@@ -68,6 +77,10 @@ function nextStopBeat() {
     return lastNote.start + lastNote.beats;
 }
 
+function endMessage(missCount) {
+    return END_MESSAGES.find(({ maxMisses }) => missCount <= maxMisses).text;
+}
+
 // The song has reached its stop: it waits there for the next note, or
 // ends if there is none left.
 function handleReachLine() {
@@ -76,6 +89,7 @@ function handleReachLine() {
         return;
     }
     resultsSongElement.textContent = activeSong.title;
+    resultsMessageElement.textContent = endMessage(misses);
     setState(STATES.FINISHED);
 }
 
@@ -98,13 +112,15 @@ function handleKeyPress(pitch) {
     setState(STATES.PLAYING);
 }
 
-// elements: { title, status, highway, stats, resultsSong, resultsStats }.
+// elements: { title, status, highway, stats, resultsSong, resultsStats,
+// resultsMessage }.
 export function initGame(elements) {
     titleElement = elements.title;
     statusElement = elements.status;
     highwayElement = elements.highway;
     statsElement = elements.stats;
     resultsSongElement = elements.resultsSong;
+    resultsMessageElement = elements.resultsMessage;
     statLists = [elements.stats, elements.resultsStats];
     onStateChange(handleStateChange);
     onKeyPress(handleKeyPress);

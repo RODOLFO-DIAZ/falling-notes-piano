@@ -290,6 +290,14 @@ p {
     color: var(--color-success);
 }
 
+/* The encouraging line under the score: larger than the song title, so
+   it is the first thing read after "Canción terminada". */
+.results-message {
+    margin: 0 0 var(--space-md);
+    font-size: 1.125rem;
+    font-weight: 600;
+}
+
 /* Shown instead of starting when the song data is invalid. */
 .screen-error {
     margin-top: var(--space-md);
