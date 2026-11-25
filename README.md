@@ -2,6 +2,8 @@
 
 **Live demo:** https://rodolfo-diaz.github.io/falling-notes-piano/
 
+**Video walkthrough:** https://youtu.be/6YI9xm3m4Bc explains how the two challenges of the assignment were solved.
+
 A piano trainer that runs in the browser. Notes fall toward a hit line and you play them on your computer keyboard. When a note reaches the line, the song waits until you press the right key. Choose one of three built-in songs or switch to free play.
 
 ## How to play
@@ -119,6 +121,14 @@ HTML, CSS and JavaScript without frameworks, libraries or build tools. Animation
 - **Sound:** synthesized in the browser with the Web Audio API (a triangle wave per note). No audio files or sound libraries are used.
 - **Music:** *Twinkle, Twinkle, Little Star* (traditional) and Ludwig van Beethoven's *Ode to Joy* and *Für Elise*, all in the public domain, arranged here as single-note melodies.
 - **Libraries:** none.
+
+## References
+
+These videos were used as references while building the code:
+
+- Héctor de León, *Crear un piano con sonido en JavaScript en menos de 10 minutos*: [YouTube search](https://www.youtube.com/results?search_query=Hector+de+Leon+Crear+un+piano+con+sonido+en+Javascript+en+menos+de+10+minutos)
+- Richard Barolin, *Animaciones con JavaScript y requestAnimationFrame* (Curso JavaScript Desde Cero, módulo 11, video 58): https://www.youtube.com/watch?v=ZGSSgW_N2LE
+- Sophie Koonin, *Play Them Off, Keyboard App: Building a virtual piano in JavaScript* (JSCamp 2021): https://www.youtube.com/watch?v=Ghrl5whfpso
 
 ## License
 
